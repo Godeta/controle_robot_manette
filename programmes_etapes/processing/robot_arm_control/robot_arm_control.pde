@@ -14,6 +14,11 @@ float[] Xsphere = new float[99];
 float[] Ysphere = new float[99];
 float[] Zsphere = new float[99];
 
+float Xbox = -50.0;
+float Ybox = -60.0;
+float Zbox = -20.0;
+float dist3d =0;
+
 void setup(){
     size(1200, 800, OPENGL);
     
@@ -38,6 +43,7 @@ void draw(){
    lights(); 
    directionalLight(51, 102, 126, -1, 0, 0);
     
+    //sphere size
     for (int i=0; i< Xsphere.length - 1; i++) {
     Xsphere[i] = Xsphere[i + 1];
     Ysphere[i] = Ysphere[i + 1];
@@ -48,13 +54,29 @@ void draw(){
     Ysphere[Ysphere.length - 1] = posY;
     Zsphere[Zsphere.length - 1] = posZ;
    
-   noStroke();
-   
+   noStroke(); 
+   //camera
    translate(width/2,height/2);
    rotateX(rotX);
    rotateY(-rotY);
    scale(-4);
    
+       //box
+    pushMatrix(); //save coord
+    translate(Xbox, Ybox, Zbox);
+    fill(#FFFFFF);
+    dist3d = sqrt( sq(-Ysphere[98]-Xbox)+sq(-Zsphere[98]-Ybox)+sq(-Xsphere[98]-Zbox) );
+    //println(dist3d);
+    //detect short distance
+    if( dist3d<11.5){
+     fill(#FF0000); 
+     println("CONTACT");
+    }
+    box(50,10,20);
+    //translate(50,60,20);
+    popMatrix(); //restore
+   
+   //sphere
    for (int i=0; i < Xsphere.length; i++) {
      pushMatrix();
      translate(-Ysphere[i], -Zsphere[i]-11, -Xsphere[i]);
@@ -63,6 +85,7 @@ void draw(){
      popMatrix();
     }
     
+    //robot
    fill(#FFE308);  
    translate(0,-40,0);   
      shape(base);
