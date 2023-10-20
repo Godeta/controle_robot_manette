@@ -2,6 +2,7 @@ float F = 50;
 float T = 70;
 float millisOld, gTime, gSpeed = 4;
 
+//gestion déplacement du robot
 void IK(){
   float X = posX;
   float Y = posY;
@@ -15,12 +16,14 @@ void IK(){
   gamma = atan2(Y, X);
 }
 
+//déplacement automatique
 void setTime(){
   gTime += ((float)millis()/1000 - millisOld)*(gSpeed/4);
   if(gTime >= 4)  gTime = 0;  
   millisOld = (float)millis()/1000;
 }
 
+//actualiser la position
 void writePos(){
   IK();
   //setTime();
@@ -30,20 +33,18 @@ void writePos(){
   
 }
 
-// serialEvent  method is run automatically whenever the buffer 
-// reaches the byte value set by  bufferUntil():
+// méthode qui se lance automatiquement chaque fois que le buffer atteint la valeur binaire définie par bufferUntil()
 void serialEvent(Serial thisPort) { 
-  // read the serial buffer:
+  // lecture du buffer série
   String inputString = thisPort.readStringUntil('\n');
 
-  // trim the carrige return and linefeed from the input string:
+  // enlève les sauts de ligne
   inputString = trim(inputString);
 
-  // split the input string at the commas
-  // and convert the sections into integers:
+  // sépare les inputs par rapport aux virgules et converti les sections en entiers
   int sensors[] = int(split(inputString, ','));
 
-  // if you received all the sensor values, use them:
+  // si on a toutes les valeurs du capteur on les utilise
   if (sensors.length == 5) {
     //printArray(sensors);
     //println("-  -  -  -");
@@ -53,19 +54,19 @@ void serialEvent(Serial thisPort) {
       print(sensors[1]);
     }
     else if(sensors[2]==0) {
-      //translate (100, 100); //increment angle
+      //translate (100, 100); //augmente l'angle
       posX = posX-1;
       println("OK ");
       print(posX);
     }
         else if(sensors[3]==0) {
-      //translate (100, 100); //increment angle
+      //translate (100, 100);
       posZ = posZ+1;
       println("KO ");
       print(posZ);
     }
     else if(sensors[4]==0) {
-      //translate (100, 100); //increment angle
+      //translate (100, 100); 
       posZ = posZ-1;
       println("KO ");
       print(posZ);
