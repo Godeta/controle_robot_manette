@@ -1,0 +1,1 @@
+Attention Unity 2023 et les nouvelles version de dotnet n'ont plus nativement la méthode System.Io.Ports donc pour régler cela j'ai réaliser le jeu dans Unity 2019 avec dotnet 4.0.
